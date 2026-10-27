@@ -1,7 +1,7 @@
-# ADR-001: Event Publication Mechanism
+﻿# ADR-001: Event Publication Mechanism
 
-**Status:** Accepted for the proposed architecture  
-**Decision date:** 27 October 2026  
+**Status:** Accepted for the proposed architecture
+**Decision date:** 27 October 2026
 **Scope:** Reliable publication of backend business events
 
 ## 1. Context
@@ -26,13 +26,13 @@ The database and event-delivery technology will be selected separately according
 
 ## 3. Alternatives Considered
 
-### 3.1 Application-managed outbox publisher — selected
+### 3.1 Application-managed outbox publisher â€” selected
 
 A dedicated application process reads pending outbox records and publishes them.
 
 This approach provides direct control over retry behavior, publication progress, error handling, and recovery. Those behaviors can be tested through explicit failure scenarios without requiring a separate change-data-capture platform.
 
-### 3.2 Change data capture (CDC) — not selected for the initial design
+### 3.2 Change data capture (CDC) â€” not selected for the initial design
 
 A CDC connector observes committed database changes and forwards corresponding outbox events.
 
@@ -40,7 +40,7 @@ This is an established alternative, but it introduces connector configuration, o
 
 CDC may be reconsidered if the chosen infrastructure or measured operational needs make it more appropriate.
 
-### 3.3 Direct database update followed by event publication — rejected where atomic consistency is required
+### 3.3 Direct database update followed by event publication â€” rejected where atomic consistency is required
 
 This approach performs the business-state change and event publication as separate operations without a durable intermediate record.
 
