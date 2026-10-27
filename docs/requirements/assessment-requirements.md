@@ -8,6 +8,12 @@ The solution covers the delivery of time-sensitive backend events to a smartwatc
 
 The assessment deadline is Thursday, October 29, 2026, at 12:00 PM WAT.
 
+### Role Context
+
+The Senior Software Engineer role emphasizes reliable backend services and APIs, production troubleshooting, performance, testable code, architecture decisions, code review, and collaboration throughout implementation and deployment.
+
+These expectations inform the engineering quality of the solution. The detailed technical requirements below are derived from the assessment brief; they are not claims about Clockit's existing internal implementation.
+
 ## 2. System Architecture and End-to-End Flow
 
 ### REQ-ARCH-001 — High-Level Architecture
@@ -124,7 +130,9 @@ Where feasible, investigate and implement:
 
 - Network-change detection.
 - Detection or recovery from NAT-related connection flushing.
-- BLE-based liveness signals that can reset relevant idle timers or influence delivery priority.
+- BLE-based liveness signals to monitor phone-to-watch link health and, where appropriate, influence delivery priority.
+
+BLE activity shall not be treated as proof that the phone-to-backend connection remains alive. Activity on the BLE link does not, by itself, reset the idle timer maintained by the mobile carrier or network path for the separate backend connection.
 
 ### REQ-CONN-011 — Test and Demonstration Harness
 
