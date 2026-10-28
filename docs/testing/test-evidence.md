@@ -1,43 +1,84 @@
 ﻿# Local Test Evidence
-## Record
-- **Execution date:** 2026-10-28
-- **Environment:** Windows PowerShell; Node.js v22.23.4; npm CLI 10.9.9; TypeScript 7.0.2; tsx 4.23.15
-- **Scope:** Local TypeScript unit tests, typecheck, and console demo
-- **Evidence source:** Command output from the local repository run
-## Automated tests
-Command:
+
+## Test Environment
+
+- **Date:** 28 October 2026
+- **Operating system:** Windows
+- **Node.js:** v22.23.4
+- **npm CLI:** 10.9.9
+- **TypeScript:** 7.0.2
+- **tsx:** 4.23.15
+
+Verification covered automated tests, TypeScript typechecking, and the integrated console demonstration.
+
+## Automated Tests
+
+**Command**
+
 ```powershell
-node "C:\Program Files\nodejs\node_modules\npm\bin\npm-cli.js" test
+npm test
 ```
-Result: **32 tests passed; 0 failed; 0 skipped.**
-The suite covers event creation and validation; per-device delivery claims, leases, retries, expiry, dead-lettering, duplicate publication, and device acknowledgment; connection-manager timeout estimation, heartbeat jitter, reconnect delay, in-memory outbox and simulated protection; and transaction-intent success/failure, duplicate submission, conflicting intent identity, uncertain outcomes, reconciliation, and outcome-communication retry.
-These are component-level tests. They do not establish that every assessment requirement is satisfied.
-## Typecheck
-Command:
+
+**Result:** 55 passed, 0 failed.
+
+The test suite covers:
+
+- Event creation and validation.
+- Backend delivery state, leases, retries, expiry, dead-lettering, and phone-storage acknowledgments.
+- Adaptive timeout estimation, heartbeat scheduling, reconnect backoff, outbox behavior, and simulated foreground protection.
+- Transaction-intent handling, duplicate submissions, conflicting requests, uncertain execution outcomes, reconciliation, and outcome communication.
+- Phone-to-watch relay delivery, duplicate handling, expiry, acknowledgment validation, and retries after a lost acknowledgment.
+- Watch-interaction intent submission, duplicate-intent protection, conflicting parameters, expiry checks, and retrieval of existing intents.
+
+These results establish the behavior exercised by the tests within the local TypeScript environment. They do not establish complete assessment compliance or production reliability.
+
+## TypeScript Typecheck
+
+**Command**
+
 ```powershell
-node "C:\Program Files\nodejs\node_modules\npm\bin\npm-cli.js" run typecheck
+npm run typecheck
 ```
-Result: completed successfully with no reported TypeScript errors.
-## Demo
-Command:
+
+**Result:** Completed successfully with no reported TypeScript errors.
+
+## Integrated Demonstration
+
+**Command**
+
 ```powershell
-node "C:\Program Files\nodejs\node_modules\npm\bin\npm-cli.js" run demo
+npm run demo
 ```
-Observed results:
-1. A sample event was created.
-2. The simulated transport sent it to `demo-phone-001` and `demo-phone-002`.
-3. Both delivery records were acknowledged as `PHONE_STORED` in memory.
-4. A simulated transaction execution lost its response and the intent became `OUTCOME_UNKNOWN`.
-5. Reconciliation found the original simulated execution and changed the intent to `SUCCEEDED`.
-6. The executor call count remained **1** before and after reconciliation.
-7. The recorded outcome was passed to the demo outcome callback.
-The demo showed a heartbeat interval of 96,000 ms and a reconnect delay of 500 ms for its configured deterministic sample.
-## Evidence boundary and outstanding verification
-The tests and demo ran locally. Delivery, phone receipt, transaction execution, and foreground protection are simulated where stated. Relevant records and outbox state are in memory.
-Not demonstrated by this evidence:
-- Process-restart recovery or durable storage.
-- Real backend transport, FCM, Android lifecycle behavior, BLE, or smartwatch input.
-- Real payment-provider execution, a production ledger, or provider-side idempotency.
-- Physical-device or carrier-network diagnosis.
-- Security review, battery measurements, or load/capacity tests for 500,000 concurrent users.
-Do not treat the whole assessment as verified based only on this record. Re-run the commands and update this document if the code or results change.
+
+The demonstration completed successfully and produced the following results:
+
+| Stage                    | Observed result                                   |
+| ------------------------ | ------------------------------------------------- |
+| Event creation           | Sample event created                              |
+| Backend delivery         | Sent to two simulated devices                     |
+| Phone acknowledgment     | Both records reached `PHONE_STORED`               |
+| Phone-to-watch relay     | `ACKNOWLEDGED` after one attempt                  |
+| Simulated watch storage  | One event stored                                  |
+| Double-tap interaction   | Transaction intent accepted                       |
+| Initial execution result | `OUTCOME_UNKNOWN` after a simulated lost response |
+| Reconciliation           | Intent changed to `SUCCEEDED`                     |
+| Execution count          | Remained at one                                   |
+| Outcome communication    | `SUCCEEDED (SIMULATED_SUCCESS)`                   |
+| Demonstration            | Completed                                         |
+
+The transaction scenario demonstrates that the simulated processor can reconcile an uncertain result without making a second executor call. It does not prove exactly-once execution against a real payment provider.
+
+The relay scenario demonstrates the tested acknowledgment and storage behavior in memory. It does not demonstrate communication with a physical smartwatch.
+
+## Evidence Limitations
+
+The implementation uses in-memory state and simulated transports and execution components. The recorded results do not establish:
+
+- Recovery of pending work after process termination and restart.
+- Real WebSocket, push-notification, Android lifecycle, or Bluetooth Low Energy behavior.
+- Physical smartwatch communication or gesture detection.
+- Production payment execution, authoritative ledger behavior, or provider-side idempotency.
+- Reproduction or resolution of the reported mobile-network and device-specific failures.
+- Production security, battery consumption, or capacity for 500,000 concurrent users.
+
+The test suite, typecheck, and demonstration provide evidence for the behaviors exercised in their respective environments. Requirements involving physical devices, real networks, durable persistence, production financial infrastructure, and large-scale capacity remain unverified.
