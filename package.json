@@ -1,0 +1,23 @@
+{
+  "name": "clockit-event-streaming",
+  "version": "1.0.0",
+  "description": "This project implements and evaluates the real-time event-to-transaction\r streaming infrastructure described in the Clockit technical assessment.",
+  "main": "index.js",
+  "directories": {
+    "doc": "docs"
+  },
+  "scripts": {
+    "test": "tsx --test test/**/*.test.ts",
+    "typecheck": "tsc --noEmit",
+    "demo": "tsx src/demo.ts"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "devDependencies": {
+    "@types/node": "^26.6.5",
+    "tsx": "^4.23.15",
+    "typescript": "^7.0.2"
+  },
+  "type": "module"
+}

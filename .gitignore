@@ -15,4 +15,7 @@ out/
 
 # Operating system files
 .DS_Store
-Thumbs.db
+Thumbs.db# Node.js dependencies and TypeScript build output
+node_modules/
+dist/
+coverage/
